@@ -40,7 +40,13 @@ if [[ "$(uname -s)" == "Linux" ]] && command -v apt-get &> /dev/null; then
 
     if [ ${#NEEDED[@]} -gt 0 ]; then
         echo "    Устанавливаем: ${NEEDED[*]}"
-        sudo apt-get install -y -qq "${NEEDED[@]}"
+        # В Docker/CI-среде (Railway, Fly.io) sudo может отсутствовать —
+        # проверяем, является ли текущий пользователь root.
+        if [ "$(id -u)" = "0" ]; then
+            apt-get install -y -qq "${NEEDED[@]}"
+        else
+            sudo apt-get install -y -qq "${NEEDED[@]}"
+        fi
     fi
 
     echo "    Python3: $(python3 --version)"
