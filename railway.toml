@@ -1,9 +1,0 @@
-[railway]
-schemaVersion = 2
-
-[deploy]
-healthcheckPath = "/api/health"
-numReplicas = 1
-
-[deploy.startCommand]
-Command = "supervisord -c /home/1000/supervisord.conf"
